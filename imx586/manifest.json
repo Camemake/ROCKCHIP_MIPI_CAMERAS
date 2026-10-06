@@ -1,0 +1,12 @@
+{
+  "board": "luckfox-aura",
+  "part": "IMX586",
+  "compatible": "camemake,imx586cm",
+  "width": 4000,
+  "height": 3000,
+  "code": "SRGGB10_1X10",
+  "lanes": 4,
+  "link_frequency_hz": 450000000,
+  "fourcc": "RG10",
+  "port": 8090
+}

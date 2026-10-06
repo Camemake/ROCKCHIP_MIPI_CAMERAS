@@ -1,0 +1,41 @@
+{
+  "board": "luckfox-aura",
+  "soc": "rv1126b",
+  "kernel": "6.1.141",
+  "part": "HM2170",
+  "module": "hm2170",
+  "compatible": "himax,hm2170",
+  "connector": "CSI1",
+  "i2c": {
+    "bus": 3,
+    "address": "0x25"
+  },
+  "mode": {
+    "width": 1928,
+    "height": 1088,
+    "code": "SGRBG10_1X10",
+    "lanes": 2,
+    "link_frequency_hz": 540000000,
+    "xclk_hz": 27000000
+  },
+  "capture": {
+    "media": "rkcif-mipi-lvds2",
+    "video": "stream_cif_mipi_id0",
+    "fourcc": "BA10"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "hm2170.c",
+    "hm2170.ko",
+    "phy1clk.ko",
+    "hm2170-overlay.dts",
+    "Makefile",
+    "live.py",
+    "livecap.c",
+    "livecap",
+    "install.sh",
+    "manifest.json"
+  ]
+}

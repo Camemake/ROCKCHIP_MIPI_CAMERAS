@@ -1,0 +1,42 @@
+{
+  "board": "luckfox-aura",
+  "soc": "rv1126b",
+  "kernel": "6.1.141",
+  "part": "IMX675",
+  "module": "imx675",
+  "compatible": "sony,imx675",
+  "connector": "CSI1",
+  "i2c": {
+    "bus": 3,
+    "address": "0x1a"
+  },
+  "mode": {
+    "width": 2608,
+    "height": 1960,
+    "code": "SGRBG10_1X10",
+    "lanes": 2,
+    "link_frequency_hz": 720000000,
+    "xclk_hz": 27000000
+  },
+  "capture": {
+    "media": "rkcif-mipi-lvds2",
+    "video": "stream_cif_mipi_id0",
+    "fourcc": "BA10"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "imx675.c",
+    "regs.inc",
+    "imx675.ko",
+    "phy1clk.ko",
+    "imx675-overlay.dts",
+    "Makefile",
+    "live.py",
+    "livecap.c",
+    "livecap",
+    "install.sh",
+    "manifest.json"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "board": "luckfox-aura",
+  "soc": "rv1126b",
+  "kernel": "6.1.141",
+  "part": "IMX908",
+  "module": "imx908",
+  "compatible": "sony,imx908",
+  "connector": "CSI1",
+  "i2c": {
+    "bus": 3,
+    "address": "0x1a"
+  },
+  "mode": {
+    "width": 3856,
+    "height": 2176,
+    "code": "SRGGB10_1X10",
+    "lanes": 4,
+    "link_frequency_hz": 720000000,
+    "xclk_hz": 27000000
+  },
+  "capture": {
+    "media": "rkcif-mipi-lvds2",
+    "video": "stream_cif_mipi_id0",
+    "fourcc": "RG10"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "imx908.c",
+    "imx908.ko",
+    "phy1clk.ko",
+    "imx908-overlay.dts",
+    "Makefile",
+    "live.py",
+    "livecap.c",
+    "livecap",
+    "install.sh",
+    "IMX908_MIPI_4L.ini",
+    "manifest.json"
+  ]
+}

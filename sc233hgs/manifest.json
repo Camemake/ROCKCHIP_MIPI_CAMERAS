@@ -1,0 +1,12 @@
+{
+  "board": "luckfox-aura",
+  "part": "SC233HGS",
+  "compatible": "smartsens,sc233hgs",
+  "width": 1920,
+  "height": 1200,
+  "code": "SBGGR10_1X10",
+  "lanes": 4,
+  "link_frequency_hz": 270000000,
+  "fourcc": "BG10",
+  "port": 8090
+}

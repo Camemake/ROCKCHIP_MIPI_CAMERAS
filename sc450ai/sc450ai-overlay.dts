@@ -1,0 +1,119 @@
+/dts-v1/;
+/plugin/;
+
+/*
+ * SC450AI on Luckfox Aura CSI1.
+ * 4-lane CSI1 is csi2_dphy3 into mipi2_csi2 and rkcif_mipi_lvds2.
+ * Logical dphy3 uses rockchip,hw entry 1, the CSI1 analog PHY.
+ * I2C3 address 0x30. The module crystal is the clock.
+ * Leave CSI1 IO0 as a GPIO input. Driving cam_clk2 stops the crystal.
+ * The fixed clock below only satisfies the driver's clk_get.
+ * CSI1 IO1 is GPIO4_B1 and has to sit high or the chip does not ACK.
+ * Link 180 MHz is the 4-lane rate that streamed on the Pi.
+ */
+
+&{/} {
+	sc450ai_xvclk: sc450ai-xvclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <27000000>;
+	};
+};
+
+&i2c3 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	sc450ai_0: sc450ai@30 {
+		compatible = "smartsens,sc450ai";
+		reg = <0x30>;
+		clocks = <&sc450ai_xvclk>;
+		clock-names = "xvclk";
+		reset-gpios = <&gpio4 9 0>;
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "sc450ai";
+		rockchip,camera-module-lens-name = "default";
+
+		port {
+			sc450ai_out: endpoint {
+				remote-endpoint = <&csi_dphy3_in>;
+				data-lanes = <1 2 3 4>;
+			};
+		};
+	};
+};
+
+&csi2_dphy3 {
+	status = "okay";
+	rockchip,hw = <&csi2_dphy0_hw &csi2_dphy1_hw>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csi_dphy3_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&sc450ai_out>;
+				data-lanes = <1 2 3 4>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csidphy3_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&mipi2_csi2_in>;
+			};
+		};
+	};
+};
+
+&mipi2_csi2 {
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi2_csi2_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&csidphy3_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi2_csi2_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&cif_mipi_in2>;
+			};
+		};
+	};
+};
+
+&rkcif_mipi_lvds2 {
+	status = "okay";
+
+	port {
+		cif_mipi_in2: endpoint {
+			remote-endpoint = <&mipi2_csi2_out>;
+		};
+	};
+};

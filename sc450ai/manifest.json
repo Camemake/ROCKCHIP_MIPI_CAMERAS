@@ -1,0 +1,42 @@
+{
+  "board": "luckfox-aura",
+  "soc": "rv1126b",
+  "kernel": "6.1.141",
+  "part": "SC450AI",
+  "module": "sc450ai",
+  "compatible": "smartsens,sc450ai",
+  "connector": "CSI1",
+  "i2c": {
+    "bus": 3,
+    "address": "0x30"
+  },
+  "mode": {
+    "width": 2688,
+    "height": 1520,
+    "code": "SBGGR10_1X10",
+    "lanes": 4,
+    "link_frequency_hz": 180000000,
+    "xclk_hz": 27000000
+  },
+  "capture": {
+    "media": "rkcif-mipi-lvds2",
+    "video": "stream_cif_mipi_id0",
+    "fourcc": "BG10"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "sc450ai.c",
+    "regs.inc",
+    "sc450ai.ko",
+    "phy1clk.ko",
+    "sc450ai-overlay.dts",
+    "Makefile",
+    "live.py",
+    "livecap.c",
+    "livecap",
+    "install.sh",
+    "manifest.json"
+  ]
+}

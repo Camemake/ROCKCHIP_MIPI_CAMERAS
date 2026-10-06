@@ -1,0 +1,42 @@
+{
+  "board": "luckfox-aura",
+  "soc": "rv1126b",
+  "kernel": "6.1.141",
+  "part": "GC4023",
+  "module": "gc4023",
+  "compatible": "galaxycore,gc4023",
+  "connector": "CSI1",
+  "i2c": {
+    "bus": 3,
+    "address": "0x29"
+  },
+  "mode": {
+    "width": 2560,
+    "height": 1440,
+    "code": "SRGGB10_1X10",
+    "lanes": 2,
+    "link_frequency_hz": 351000000,
+    "xclk_hz": 27000000
+  },
+  "capture": {
+    "media": "rkcif-mipi-lvds2",
+    "video": "stream_cif_mipi_id0"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "gc4023.c",
+    "gc4023.ko",
+    "phy1clk.ko",
+    "gc4023-overlay.dts",
+    "Makefile",
+    "Makefile.fragment",
+    "Kconfig.fragment",
+    "live.py",
+    "livecap.c",
+    "livecap",
+    "install.sh",
+    "manifest.json"
+  ]
+}

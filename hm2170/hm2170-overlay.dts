@@ -1,0 +1,122 @@
+/dts-v1/;
+/plugin/;
+
+/*
+ * HM2170 on Luckfox Aura CSI1.
+ * 2-lane CSI1 is csi2_dphy4 into mipi2_csi2 and rkcif_mipi_lvds2.
+ * I2C3 address 0x25. The module crystal is the sensor clock.
+ * Leave CSI1 IO0 as a GPIO input. Driving cam_clk2 stops the crystal.
+ * The fixed clock below only satisfies the driver's clk_get.
+ * CSI1 IO1 is GPIO4_B1 and has to sit high or the chip does not ACK.
+ * Link 540 MHz is the Intel 384 MHz table scaled from 19.2 MHz onto 27 MHz.
+ */
+
+&{/} {
+	hm2170_xvclk: hm2170-xvclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <27000000>;
+	};
+};
+
+&i2c3 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	hm2170_0: hm2170@25 {
+		compatible = "himax,hm2170";
+		reg = <0x25>;
+		clocks = <&hm2170_xvclk>;
+		clock-names = "xvclk";
+		reset-gpios = <&gpio4 9 0>;
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "hm2170";
+		rockchip,camera-module-lens-name = "default";
+
+		port {
+			hm2170_out: endpoint {
+				remote-endpoint = <&csi_dphy4_in>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
+};
+
+&csi2_dphy4 {
+	status = "okay";
+	/*
+	 * Logical dphy4 uses rockchip,hw entry 1 (index / 3).
+	 * That entry has to be csi2_dphy1_hw, the CSI1 analog PHY.
+	 */
+	rockchip,hw = <&csi2_dphy0_hw &csi2_dphy1_hw>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csi_dphy4_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&hm2170_out>;
+				data-lanes = <1 2>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csidphy4_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&mipi2_csi2_in>;
+			};
+		};
+	};
+};
+
+&mipi2_csi2 {
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi2_csi2_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&csidphy4_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi2_csi2_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&cif_mipi_in2>;
+			};
+		};
+	};
+};
+
+&rkcif_mipi_lvds2 {
+	status = "okay";
+
+	port {
+		cif_mipi_in2: endpoint {
+			remote-endpoint = <&mipi2_csi2_out>;
+		};
+	};
+};

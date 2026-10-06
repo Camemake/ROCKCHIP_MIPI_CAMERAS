@@ -1,0 +1,10 @@
+config VIDEO_GC4023
+	tristate "GalaxyCore GC4023 sensor support"
+	depends on I2C && VIDEO_DEV
+	select VIDEO_V4L2_SUBDEV_API
+	help
+	  V4L2 subdevice driver for the GC4023 CSI-2 sensor on the
+	  Luckfox Aura CSI1 connector. 2560x1440 RAW10 RGGB, 2 lanes.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called gc4023.

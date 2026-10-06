@@ -1,0 +1,11 @@
+The kernel drivers in this repository (the `*.c` files, including
+`common/phy1clk.c`) are licensed under the GNU General Public License
+version 2, the same license as the Linux kernel they are built against.
+
+The scripts, device-tree overlays, register lists, and this README are
+published under the same GPL-2.0 terms so the tree can be built and
+shared as one package.
+
+SPDX-License-Identifier: GPL-2.0
+
+The full license text is at https://www.gnu.org/licenses/old-licenses/gpl-2.0.html

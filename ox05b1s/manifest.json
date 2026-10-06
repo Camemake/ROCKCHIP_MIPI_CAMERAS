@@ -1,0 +1,41 @@
+{
+  "board": "luckfox-aura",
+  "soc": "rv1126b",
+  "kernel": "6.1.141",
+  "part": "OX05B1S",
+  "module": "ox05b1s",
+  "compatible": "ovti,ox05b1s",
+  "connector": "CSI1",
+  "i2c": {
+    "bus": 3,
+    "address": "0x36"
+  },
+  "mode": {
+    "width": 2592,
+    "height": 1944,
+    "code": "SGRBG10_1X10",
+    "lanes": 4,
+    "link_frequency_hz": 450000000,
+    "xclk_hz": 27000000
+  },
+  "capture": {
+    "media": "rkcif-mipi-lvds2",
+    "video": "stream_cif_mipi_id0",
+    "fourcc": "BA10"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "ox05b1s.c",
+    "ox05b1s.ko",
+    "phy1clk.ko",
+    "ox05b1s-overlay.dts",
+    "Makefile",
+    "live.py",
+    "livecap.c",
+    "livecap",
+    "install.sh",
+    "manifest.json"
+  ]
+}
