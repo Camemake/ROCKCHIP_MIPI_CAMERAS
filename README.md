@@ -129,8 +129,6 @@ The receiver path is `csi2_dphy4`. Each line is padded to 2560 bytes. A full fra
 
 A register value of `0xffff` in the table is a delay in milliseconds, not a sensor register. Stream on is `0x0100=0x01`.
 
-The preview on this board was about 23 frames per second.
-
 ## OX05B1S
 
 Folder `ox05b1s/`. Product: [OX05B1S 5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-ox05b1s-rpi-ox05b1s-5mp-ff-for-raspberry-pi-1088). Sensor: [OmniVision OX05B1S](https://www.ovt.com/products/ox05b/).
@@ -145,7 +143,6 @@ Stream on is `0x0100=0x01`. Standby is `0x0100=0x00`.
 
 This sensor is RGB-IR. The simple preview looks magenta. That is the viewer, not a broken camera.
 
-The preview on this board was about 9 frames per second.
 
 ## IMX908
 
@@ -159,9 +156,6 @@ The receiver path is `csi2_dphy3`. Each line is padded to 4864 bytes. A full fra
 
 Stream on is standby cancel `0x3000=0x00`, wait 24 ms, then master start `0x3002=0x00`. Standby is `0x3000=0x01` and master stop is `0x3002=0x01`.
 
-The module we tested had no lens, so the frame was white. The preview was about 6 frames per second.
-
-`IMX908_MIPI_4L.ini` is the same sequence in the Xunfei station format. SlaveID `0x34` is the 8-bit form of I2C `0x1a`.
 
 ## SC450AI
 
@@ -174,8 +168,6 @@ SmartSens SC450AI, I2C `0x30`. Chip id at `0x3107` is `0xbd2f`.
 The receiver path is `csi2_dphy3`. Each line is padded to 3584 bytes. A full frame is 5447680 bytes.
 
 The table writes `0x0103=0x01` (soft reset). The driver waits, writes the rest, then stream on is `0x0100=0x01`. Standby is `0x0100=0x00`.
-
-The preview on this board was about 10 frames per second.
 
 ## IMX675
 
@@ -190,8 +182,6 @@ The receiver path is `csi2_dphy4`. Each line is padded to 3328 bytes. A full fra
 Stream on is `0x3000=0`, wait 2 ms, then `0x3002=0`. Standby is `0x3000=1` and master stop is `0x3002=1`.
 
 On the Aura this table locks at link **720 MHz**, logged as 1440 Mbps. The same table on a Raspberry Pi 5 was run at 800 MHz. 800 MHz on this Aura PHY loses sync (`sot sync` on lanes 0 and 1) and the frame counter stays at 0. Leave the Aura driver at 720 MHz.
-
-The preview on this board was about 9 frames per second.
 
 ## IMX586
 
@@ -209,8 +199,6 @@ After the table the driver raises analog gain (`0x0204=0x03`, `0x0205=0xe0`, and
 
 There is an older public repository, [IMX586_RK35xx_MIPI_DRIVER](https://github.com/Camemake/IMX586_RK35xx_MIPI_DRIVER), aimed at RK356x and RK3588 with a different clock. The driver in this folder is the one that streamed on the Aura. Use this one for the Aura module.
 
-The preview on this board was about 4 frames per second. At this gain a bright scene looks bright. That gain is the one that produced a picture. At 1× gain the frame is a few codes above black.
-
 ## SC233HGS
 
 Folder `sc233hgs/`. Product: [SC233HGS 2MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-sc233hgs-rpi-sc233hgs-2mp-ff-for-raspberry-pi-1092). Sensor: [SmartSens SC233HGS](https://www.smartsenstech.com/en/gs_products).
@@ -224,8 +212,6 @@ The receiver path is `csi2_dphy3`. Each line is padded to 2560 bytes. A full fra
 This connector has no external trigger wire. With trigger mode left off, the sensor emits one frame each time `0x2100` goes 0 and then 1. The low level has to last about a millisecond. The driver repeats that edge every 50 ms. Do not set the continuous-trigger bit `0x3222[0]`. That bit waits for a pulse this board does not send. `0x0100` is not the stream bit on this part.
 
 The table's exposure (`0x3e01=0x40`) is 64 lines and the picture is almost black. After the table the driver writes `0x3e01=0xc0` and gain `0x3e09=0x80`.
-
-The preview on this board was about 16 frames per second.
 
 ## Other Rockchip boards
 
