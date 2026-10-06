@@ -1,14 +1,12 @@
-# Camemake MIPI cameras on Rockchip
+# Camemake MIPI camera drivers for Rockchip
 
-These are the camera modules sold for the Raspberry Pi. The same module works on a Rockchip board. Each folder here is the Linux driver and the overlay that produced a real picture on a **Luckfox Aura** (RV1126B, CSI1, the second camera socket).
+These are open Linux drivers for Camemake MIPI CSI-2 camera modules on Rockchip. Each folder is the sensor driver and the device-tree overlay that produced a real picture on a Luckfox Aura (RV1126B), with the module on CSI1, the second camera socket. The modules are the same ones sold for the Raspberry Pi 5. The Raspberry Pi drivers are in [RPI5_MIPI_DRIVERS](https://github.com/Camemake/RPI5_MIPI_DRIVERS).
 
-The picture you get from the included viewer is a live preview in a web browser. It is there so you can see that the sensor is streaming. It is not a finished color pipeline.
+Camemake designs the modules. Engineering is in Berlare, Belgium. The Hong Kong headquarters is in Kwun Tong, and the factory is in Xinfeng, China. Offices and distributors are on the [about page](https://www.camemake.eu/about-us). The shop for these modules is [Raspberry Pi camera modules](https://www.camemake.eu/raspberry-pi-camera-modules-rpi). The project list is on [camemake.github.io](https://camemake.github.io/).
 
-Other Rockchip boards use the same sensor settings. The overlay in each folder is wired for the Aura's CSI1 connector. On another board, that overlay has to be pointed at that board's own camera socket. See [Other Rockchip boards](#other-rockchip-boards).
+The picture from the included viewer is a live preview in a web browser. It shows that the sensor is streaming. It is not a finished color pipeline.
 
-Shop: [Raspberry Pi camera modules](https://www.camemake.eu/raspberry-pi-camera-modules-rpi)
-
-The Raspberry Pi 5 drivers for these same modules are in [RPI5_MIPI_DRIVERS](https://github.com/Camemake/RPI5_MIPI_DRIVERS). This repository is the Rockchip path. The project list is on [camemake.github.io](https://camemake.github.io/).
+Other Rockchip boards can reuse the sensor settings in these folders. The overlay is wired for the Aura's CSI1 connector. On another board, that overlay has to be pointed at that board's own camera socket. See [Other Rockchip boards](#other-rockchip-boards).
 
 ## The cameras
 
@@ -26,6 +24,23 @@ Every module below was connected to CSI1 of a Luckfox Aura at the time of the te
 | [SC233HGS](#sc233hgs) | 1920×1200 RAW10 BGGR | 4 | `0x30` | 270 MHz | [SC233HGS for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-sc233hgs-rpi-sc233hgs-2mp-ff-for-raspberry-pi-1092) |
 
 "Link" is the CSI-2 clock. The receiver prints twice that number as megabits per lane. A 450 MHz link is logged as 900 Mbps.
+
+The size in the table is the mode that streamed on the Aura. A sensor maker's page often lists the full pixel array, which can be a few lines larger, or, for the IMX586, the full 8000×6000 array. Use the streamed size with these drivers.
+
+## Sensor makers
+
+Camemake builds the module. The companies below make the image sensor inside it. GalaxyCore, Himax, and the SmartSens SC233HGS entry are catalog pages that list the part. Sony and OmniVision, and the SmartSens SC450AI note, are pages about that sensor.
+
+| Sensor | Maker | Sensor page |
+| --- | --- | --- |
+| GC4023 | GalaxyCore | [GC4023 on the GalaxyCore product series](https://en.gcoreinc.com/products/index?subcid=17) |
+| HM2170 | Himax | [Himax image sensors](https://www.himax.com.tw/products/cmos-image-sensor/image-sensors/) |
+| OX05B1S | OmniVision | [OX05B1S](https://www.ovt.com/products/ox05b/) |
+| IMX908 | Sony Semiconductor Solutions | [IMX908](https://www.sony-semicon.com/en/products/is/security/security/IMX908.html) |
+| SC450AI | SmartSens | [SC450AI launch note](https://www.smartsenstech.com/en/mpage?id=142) |
+| IMX675 | Sony Semiconductor Solutions | [IMX675 announcement](https://www.sony-semicon.com/en/news/2022/2022072001.html) |
+| IMX586 | Sony | [IMX586 announcement](https://www.sony.com/en/SonyInfo/News/Press/201807/18-060E/) |
+| SC233HGS | SmartSens | [SmartSens global-shutter series](https://www.smartsenstech.com/en/gs_products) |
 
 ## What you need
 
@@ -92,7 +107,7 @@ The driver can load and still deliver no picture. Check these in order.
 
 ## GC4023
 
-Folder `gc4023/`. Product: [GC4023 2.5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-gc4023-rpi-gc4023-2-5mp-ff-for-raspberry-pi-1095).
+Folder `gc4023/`. Product: [GC4023 2.5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-gc4023-rpi-gc4023-2-5mp-ff-for-raspberry-pi-1095). Sensor: [GalaxyCore GC4023](https://en.gcoreinc.com/products/index?subcid=17).
 
 GalaxyCore GC4023, I2C `0x29`. The chip id at `0x03f0` is `0x4023`. The shop text that says address `0x31` does not match this module.
 
@@ -104,7 +119,7 @@ Stream on is `0x0100=0x09`. Standby is `0x0100=0x00`. The preview is the half-re
 
 ## HM2170
 
-Folder `hm2170/`. Product: [HM2170 2MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-hm2170-rpi-hm2170-2mp-ff-for-raspberry-pi-1082).
+Folder `hm2170/`. Product: [HM2170 2MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-hm2170-rpi-hm2170-2mp-ff-for-raspberry-pi-1082). Sensor: [Himax HM2170](https://www.himax.com.tw/products/cmos-image-sensor/image-sensors/).
 
 Himax HM2170, I2C `0x25`. Address `0x24` does not answer. The chip id is three bytes at `0x0000`: `0x21 0x70` plus a revision. This module is revision `0x05` (rev D). A revision below 4 needs a different register list.
 
@@ -118,7 +133,7 @@ The preview on this board was about 23 frames per second.
 
 ## OX05B1S
 
-Folder `ox05b1s/`. Product: [OX05B1S 5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-ox05b1s-rpi-ox05b1s-5mp-ff-for-raspberry-pi-1088).
+Folder `ox05b1s/`. Product: [OX05B1S 5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-ox05b1s-rpi-ox05b1s-5mp-ff-for-raspberry-pi-1088). Sensor: [OmniVision OX05B1S](https://www.ovt.com/products/ox05b/).
 
 OmniVision OX05B1S, I2C `0x36`. Chip id at `0x300a` is `0x580542`.
 
@@ -134,7 +149,7 @@ The preview on this board was about 9 frames per second.
 
 ## IMX908
 
-Folder `imx908/`. This is the same style of module as the Raspberry Pi cameras. The shop does not have an IMX908 page yet. The rest of the range is in the [MIPI category](https://www.camemake.eu/shop/category/mipi-18).
+Folder `imx908/`. Sensor: [Sony IMX908](https://www.sony-semicon.com/en/products/is/security/security/IMX908.html). This is the same style of module as the Raspberry Pi cameras. The shop does not have an IMX908 page yet. The rest of the range is in the [MIPI category](https://www.camemake.eu/shop/category/mipi-18).
 
 Sony IMX908, I2C `0x1a`. The chip id is 16-bit at `0x4c0c`: `0x8c 0x03`, which is `0x038c`. That register does not answer until `0x3000` is written `0` and about 24 ms have passed.
 
@@ -150,7 +165,7 @@ The module we tested had no lens, so the frame was white. The preview was about 
 
 ## SC450AI
 
-Folder `sc450ai/`. Product: [SC450AI 4MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-sc450ai-rpi-sc450ai-4mp-ff-for-raspberry-pi-1096).
+Folder `sc450ai/`. Product: [SC450AI 4MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-sc450ai-rpi-sc450ai-4mp-ff-for-raspberry-pi-1096). Sensor: [SmartSens SC450AI](https://www.smartsenstech.com/en/mpage?id=142).
 
 SmartSens SC450AI, I2C `0x30`. Chip id at `0x3107` is `0xbd2f`.
 
@@ -164,7 +179,7 @@ The preview on this board was about 10 frames per second.
 
 ## IMX675
 
-Folder `imx675/`. Product: [IMX675 5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-imx675-rpi-imx675-5mp-ff-for-raspberry-pi-1105).
+Folder `imx675/`. Product: [IMX675 5MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-imx675-rpi-imx675-5mp-ff-for-raspberry-pi-1105). Sensor: [Sony IMX675](https://www.sony-semicon.com/en/news/2022/2022072001.html).
 
 Sony IMX675, I2C `0x1a`. Module id at `0x3a00` is `0x96`.
 
@@ -180,7 +195,7 @@ The preview on this board was about 9 frames per second.
 
 ## IMX586
 
-Folder `imx586/`. Product: [IMX586 48MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-imx586-rpi-imx586-48mp-ff-for-raspberry-pi-1104).
+Folder `imx586/`. Product: [IMX586 48MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-imx586-rpi-imx586-48mp-ff-for-raspberry-pi-1104). Sensor: [Sony IMX586](https://www.sony.com/en/SonyInfo/News/Press/201807/18-060E/).
 
 Sony IMX586, I2C `0x1a`. Chip id at `0x0016` is `0x0586`.
 
@@ -198,7 +213,7 @@ The preview on this board was about 4 frames per second. At this gain a bright s
 
 ## SC233HGS
 
-Folder `sc233hgs/`. Product: [SC233HGS 2MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-sc233hgs-rpi-sc233hgs-2mp-ff-for-raspberry-pi-1092).
+Folder `sc233hgs/`. Product: [SC233HGS 2MP for Raspberry Pi](https://www.camemake.eu/shop/cm-mipi-sc233hgs-rpi-sc233hgs-2mp-ff-for-raspberry-pi-1092). Sensor: [SmartSens SC233HGS](https://www.smartsenstech.com/en/gs_products).
 
 SmartSens SC233HGS, I2C `0x30`. Chip id at `0x3107` is `0xcb61`.
 
@@ -223,6 +238,40 @@ On another Rockchip board you keep the sensor settings and you rewrite the overl
 These packages were not run on RK3588, RK3576, or RK356x. A board whose kernel already has a driver of the same name will bind first, the way the Aura's built-in `imx586` driver does. Rename the compatible string the way `imx586cm` does, or the built-in driver takes the device.
 
 The preview formats (`BG10`, `RG10`, `BA10`) are the Aura CIF's packed RAW10 codes. Another CIF may use a different fourcc for the same Bayer order. Read the format list from the capture device before changing it.
+
+## Where Camemake is
+
+Camemake publishes this driver from its own module designs. The places below are the public offices.
+
+| Place | Address |
+| --- | --- |
+| European headquarters | Mosseveldstraat 57a, 9290 Berlare, Belgium |
+| Hong Kong headquarters | #1608 Apec Plaza, 49 Hoi Yuen Road, Kwun Tong, Kowloon, Hong Kong |
+| Factory | Intelligent Robot Industrial Park, Shenzhen Avenue, Xinfeng, China |
+
+Sales and engineering offices in Shenzhen, and the distributor list, are on [About Camemake](https://www.camemake.eu/about-us). Phone and email are on the [contact page](https://www.camemake.eu/contactus).
+
+## Common questions
+
+**Which Rockchip board was tested?**
+
+A Luckfox Aura, SoC RV1126B, kernel 6.1.141. The module was on CSI1. CSI0 was not used. Only one of these modules can own CSI1.
+
+**Will the same folder work on RK3588, RK3576, or RK356x?**
+
+The I2C address, lane count, link frequency, and register list are the sensor settings, and those stay. The overlay in each folder enables the Aura's `i2c-3` and CSI1 receiver. RK3588, RK3576, and RK356x were not tested with these packages. On those boards the overlay has to be rewritten for that board's camera socket. An older IMX586 tree for RK356x and RK3588 is [IMX586_RK35xx_MIPI_DRIVER](https://github.com/Camemake/IMX586_RK35xx_MIPI_DRIVER). It uses a different clock. It is not this Aura driver.
+
+**Are these the Raspberry Pi camera modules?**
+
+Yes. The shop pages are the Raspberry Pi product pages, and the Pi 5 drivers are [RPI5_MIPI_DRIVERS](https://github.com/Camemake/RPI5_MIPI_DRIVERS). This repository is the Rockchip path for the same modules.
+
+**Who makes the sensor, and who makes the module?**
+
+GalaxyCore makes the GC4023. Himax makes the HM2170. OmniVision makes the OX05B1S. Sony Semiconductor Solutions makes the IMX908, IMX675, and IMX586. SmartSens makes the SC450AI and the SC233HGS. Camemake builds the camera module and publishes the driver. Links to the sensor pages are in [Sensor makers](#sensor-makers).
+
+**Where do I buy the module?**
+
+Each camera section links to its page on [camemake.eu](https://www.camemake.eu/raspberry-pi-camera-modules-rpi). The IMX908 does not have a shop page yet.
 
 ## License
 
