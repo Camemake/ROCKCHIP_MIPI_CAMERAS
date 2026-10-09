@@ -1,0 +1,107 @@
+/dts-v1/;
+/plugin/;
+
+&{/} {
+	mira220_xvclk: mira220-xvclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <27000000>;
+	};
+};
+
+&i2c3 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	mira220_0: mira220@54 {
+		compatible = "ams,mira220";
+		reg = <0x54>;
+		clocks = <&mira220_xvclk>;
+		clock-names = "xvclk";
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "camevision-mira220";
+		rockchip,camera-module-lens-name = "default";
+
+		port {
+			mira220_out: endpoint {
+				remote-endpoint = <&csi_dphy3_in>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
+};
+
+&csi2_dphy3 {
+	status = "okay";
+	rockchip,hw = <&csi2_dphy0_hw &csi2_dphy1_hw>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csi_dphy3_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&mira220_out>;
+				data-lanes = <1 2>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csidphy3_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&mipi2_csi2_in>;
+			};
+		};
+	};
+};
+
+&mipi2_csi2 {
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi2_csi2_in: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&csidphy3_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi2_csi2_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&cif_mipi_in2>;
+			};
+		};
+	};
+};
+
+&rkcif_mipi_lvds2 {
+	status = "okay";
+
+	port {
+		cif_mipi_in2: endpoint {
+			remote-endpoint = <&mipi2_csi2_out>;
+		};
+	};
+};

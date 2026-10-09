@@ -1,6 +1,6 @@
 # Camemake MIPI camera drivers for Rockchip
 
-These are open Linux drivers for Camemake MIPI CSI-2 camera modules on Rockchip. Each folder is the sensor driver and the device-tree overlay that produced a real picture on a Luckfox Aura (RV1126B), with the module on CSI1, the second camera socket. The modules are the same ones sold for the Raspberry Pi 5. The Raspberry Pi drivers are in [RPI5_MIPI_DRIVERS](https://github.com/Camemake/RPI5_MIPI_DRIVERS).
+These are open Linux drivers for Camemake MIPI CSI-2 camera modules on Rockchip. The cameras in the table below produced a real picture on a Luckfox Aura (RV1126B), with the module on CSI1, the second camera socket. The [MIRA220](#mira220) folder is a separate test driver for the same SoC. It did not come from that Aura CSI1 test. The modules are the same ones sold for the Raspberry Pi 5. The Raspberry Pi drivers are in [RPI5_MIPI_DRIVERS](https://github.com/Camemake/RPI5_MIPI_DRIVERS).
 
 Camemake designs the modules. Engineering is in Berlare, Belgium. The Hong Kong headquarters is in Kwun Tong, and the factory is in Xinfeng, China. Offices and distributors are on the [about page](https://www.camemake.eu/about-us). The shop for these modules is [Raspberry Pi camera modules](https://www.camemake.eu/raspberry-pi-camera-modules-rpi). The project list is on [camemake.github.io](https://camemake.github.io/).
 
@@ -41,6 +41,7 @@ Camemake builds the module. The companies below make the image sensor inside it.
 | IMX675 | Sony Semiconductor Solutions | [IMX675 announcement](https://www.sony-semicon.com/en/news/2022/2022072001.html) |
 | IMX586 | Sony | [IMX586 announcement](https://www.sony.com/en/SonyInfo/News/Press/201807/18-060E/) |
 | SC233HGS | SmartSens | [SmartSens global-shutter series](https://www.smartsenstech.com/en/gs_products) |
+| MIRA220 | ams OSRAM | [Mira220](https://ams-osram.com/products/sensor-solutions/cmos-image-sensors/ams-mira220) |
 
 ## What you need
 
@@ -213,6 +214,18 @@ This connector has no external trigger wire. With trigger mode left off, the sen
 
 The table's exposure (`0x3e01=0x40`) is 64 lines and the picture is almost black. After the table the driver writes `0x3e01=0xc0` and gain `0x3e09=0x80`.
 
+## MIRA220
+
+Folder `mira220/`. This is a test driver, kept apart from the table above. The table is the Aura CSI1 pictures. The full notes are in [mira220/README.md](mira220/README.md).
+
+ams OSRAM Mira220, I2C `0x54`, 16-bit address. 1600×1400, RAW10, 2 lanes, link 750 MHz (1500 Mbps per lane). Global shutter. There is no analog gain. `0x107d` is the window start, not a gain register.
+
+Sensor page: [ams OSRAM Mira220](https://ams-osram.com/products/sensor-solutions/cmos-image-sensors/ams-mira220). The Camemake product is the [CameVision Ego](https://www.camemake.eu/shop/cv-ego01-os-camevision-ego-dual-global-shutter-ai-stereo-camera-2414) stereo camera, SKU CV-EGO01-OS-AM.
+
+The overlay enables `i2c3` and `csi2_dphy3`. On the Aura, a 2-lane camera on CSI1 uses `csi2_dphy4`, and it needs `phy1clk.ko`. On the CameVision Ego, CAM0 is `i2c3` with `csi2_dphy0`, and CAM1 is `i2c6` with `csi2_dphy3`. Use the folder README before loading this overlay on either board.
+
+The driver advertises BGGR (`BG10`). The Ego module notes say the OTP pattern is GRBG. On this CIF, GRBG is `BA10`.
+
 ## Other Rockchip boards
 
 The sensor driver and `regs.inc` are the part that is the same everywhere: I2C address, lanes, link frequency, and the register list above.
@@ -253,7 +266,7 @@ Yes. The shop pages are the Raspberry Pi product pages, and the Pi 5 drivers are
 
 **Who makes the sensor, and who makes the module?**
 
-GalaxyCore makes the GC4023. Himax makes the HM2170. OmniVision makes the OX05B1S. Sony Semiconductor Solutions makes the IMX908, IMX675, and IMX586. SmartSens makes the SC450AI and the SC233HGS. Camemake builds the camera module and publishes the driver. Links to the sensor pages are in [Sensor makers](#sensor-makers).
+GalaxyCore makes the GC4023. Himax makes the HM2170. OmniVision makes the OX05B1S. Sony Semiconductor Solutions makes the IMX908, IMX675, and IMX586. SmartSens makes the SC450AI and the SC233HGS. ams OSRAM makes the Mira220. Camemake builds the camera module and publishes the driver. Links to the sensor pages are in [Sensor makers](#sensor-makers).
 
 **Where do I buy the module?**
 

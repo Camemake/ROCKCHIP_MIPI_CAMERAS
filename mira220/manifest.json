@@ -1,0 +1,69 @@
+{
+  "board": ["luckfox-aura", "camevision-ego"],
+  "soc": "rv1126b",
+  "kernel": "6.1.141-rt52",
+  "part": "MIRA220",
+  "module": "mira220",
+  "compatible": ["ams,mira220", "camevision,mira220"],
+  "connector": "CSI",
+  "i2c": {
+    "bus": [3, 6],
+    "address": "0x54",
+    "width": "16addr_8data"
+  },
+  "mode": {
+    "width": 1600,
+    "height": 1400,
+    "code": "SBGGR10_1X10",
+    "cfa": "SGRBG",
+    "lanes": 2,
+    "link_frequency_hz": 750000000,
+    "pixel_rate_hz": 384000000,
+    "xclk_hz": [27000000, 38400000],
+    "fourcc": "BG10"
+  },
+  "supplies": {
+    "avdd_mv": 2800,
+    "dovdd_mv": 1800,
+    "dvdd_mv": 1200
+  },
+  "notes": {
+    "analog_gain": false,
+    "shutter": "global",
+    "otp": "RGB_AR_PF",
+    "cif_raw10": "le40",
+    "cif_stride": 2048
+  },
+  "capture": {
+    "cam0": {
+      "media": "rkcif-mipi-lvds",
+      "video": "/dev/video1"
+    },
+    "cam1": {
+      "media": "rkcif-mipi-lvds2",
+      "video": "/dev/video12"
+    }
+  },
+  "isp": {
+    "rkaiq_iq": "isp/mira220_camevision-mira220_default.json",
+    "cif_awb": "isp/cif-awb.json",
+    "hardware_isp": "not-linked"
+  },
+  "viewer": {
+    "port": 8090
+  },
+  "files": [
+    "mira220.c",
+    "mira220_init.h",
+    "rk-camera-module.h",
+    "mira220-overlay.dts",
+    "Makefile",
+    "build.sh",
+    "install.sh",
+    "manifest.json",
+    "MIRA220_MIPI_2L.ini",
+    "isp/cif-awb.json",
+    "isp/raw10_cif.py",
+    "isp/mira220_camevision-mira220_default.json"
+  ]
+}

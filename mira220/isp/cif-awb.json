@@ -1,0 +1,29 @@
+{
+  "path": "cif-software",
+  "measured_on": "CameVision Ego CAM0, office LED + ColorChecker Classic",
+  "unpack": {
+    "packing": "cif-compact-raw10-le40",
+    "stride": 2048,
+    "black_level_8bit": 10,
+    "cfa": "GRBG",
+    "note": "Rockchip CIF BG10 is 4 pixels in 5 little-endian bytes. Do not use CSI-2 MSB packing."
+  },
+  "awb_bgr": {
+    "B": 2.22,
+    "G": 1.0,
+    "R": 1.38,
+    "exposure": 1.38
+  },
+  "identity_ratios": {
+    "note": "After demosaic, no gains. Lights, ceiling and chart whites agreed.",
+    "B_over_G": 0.43,
+    "R_over_G": 0.73
+  },
+  "do_not": [
+    "B gain of 3.15 (pink LED tubes)",
+    "crush G to 0.62 (magenta neutrals)",
+    "3200 K libcamera CCM on office LED",
+    "subtract magenta only when R and B both exceed G (leaves a blue room)",
+    "write analog gain to 0x107d (VSTART, shears the frame)"
+  ]
+}
